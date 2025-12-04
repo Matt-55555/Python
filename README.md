@@ -1,8 +1,7 @@
 # Python
 Développements en Python
 
--- Présentation générale --
-
+Présentation générale :
 Ce projet Python met en place une pipeline complète de validation et transformation de fichiers JSON représentant des données de machines de forage (drilling machines).
 L’objectif : nettoyer, normaliser et enrichir des fichiers bruts avant de les enregistrer sous une forme propre et cohérente.
 Le projet est structuré en trois fichiers :
@@ -39,9 +38,9 @@ Ce système permet :
 ________________________________________
 3. Gestion robuste des fichiers
 La sortie est écrite de manière atomique :
-    a.	Écriture dans un fichier temporaire
-    b.	fsync() pour garantir que l’écriture est réellement persistée
-    c.	os.replace() pour un remplacement atomique du fichier cible
+•	Écriture dans un fichier temporaire
+•	fsync() pour garantir que l’écriture est réellement persistée
+•	os.replace() pour un remplacement atomique du fichier cible
 Objectif : éviter les fichiers corrompus en cas d’interruption brutale (crash, coupure, etc.)
 ________________________________________
 4. Logging structuré
@@ -73,7 +72,7 @@ Il suit :
 •	erreurs par étape.
 Ce compteur est facilement exploitable pour un futur monitoring (ex : Prometheus, Grafana).
 ________________________________________
-🔧 Fonctionnalités majeures de transformation (Functions_DM.py)
+B) Fonctionnalités majeures de transformation (Functions_DM.py)
 •	normalisation_casse_clefs
 → passe toutes les clés en minuscules (y compris en profondeur).
 •	remove_irrelevant_data_points
@@ -89,7 +88,7 @@ Ces fonctions :
 •	renvoient toujours une nouvelle structure,
 •	sont loggées pour faciliter le debugging.
 ________________________________________
-B) Objectif du projet
+C) Objectif du projet
 Ce projet a été conçu pour montrer à un recruteur :
 •	Ma capacité à structurer un projet Python “production-like”
 •	Ma maîtrise du logging, des exceptions et de la sécurité d'écriture
@@ -97,7 +96,7 @@ Ce projet a été conçu pour montrer à un recruteur :
 •	Une approche professionnelle : typage, docstrings, architecture modulaire
 •	Mon expérience combinée Python / VBA pour automatiser des workflows réels
 ________________________________________
-C) Arborescence du projet
+D) Arborescence du projet
 project/
 │
 ├── Main_program.py
@@ -107,10 +106,9 @@ project/
 └── raw/
     └── drilling_machine*.json
 ________________________________________
-D) Exécution
+E) Exécution
 Modifier les chemins dans le __main__ :
 RAW = Path(r"C:\path\to\raw")
 PROCESSED = Path(r"C:\path\to\processed")
 Puis lancer :
 python Main_program.py
-________________________________________
