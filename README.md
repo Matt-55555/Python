@@ -39,9 +39,9 @@ Ce système permet :
 ________________________________________
 3. Gestion robuste des fichiers
 La sortie est écrite de manière atomique :
-1.	Écriture dans un fichier temporaire
-2.	fsync() pour garantir que l’écriture est réellement persistée
-3.	os.replace() pour un remplacement atomique du fichier cible
+    a.	Écriture dans un fichier temporaire
+    b.	fsync() pour garantir que l’écriture est réellement persistée
+    c.	os.replace() pour un remplacement atomique du fichier cible
 Objectif : éviter les fichiers corrompus en cas d’interruption brutale (crash, coupure, etc.)
 ________________________________________
 4. Logging structuré
