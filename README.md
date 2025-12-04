@@ -1,7 +1,7 @@
 # Python
 Développements en Python
 
-Présentation générale:
+Présentation générale :
 Ce projet Python met en place un pipeline complet de validation et transformation de fichiers JSON représentant des données de machines de forage (drilling machines).
 L’objectif : nettoyer, normaliser et enrichir des fichiers bruts avant de les enregistrer sous une forme propre et cohérente.
 Le projet est structuré en trois fichiers :
