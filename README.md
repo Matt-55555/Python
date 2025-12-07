@@ -97,11 +97,10 @@ Ce projet a été conçu pour montrer à un recruteur :
 •	Mon expérience combinée Python / VBA pour automatiser des workflows réels
 ________________________________________
 D) Arborescence du projet
-project/<br>
+project_folder/<br>
 │<br>
 ├── Main_program.py<br>
 ├── subfolder1/<br>
-│   ├── Functions_DM.py<br>
-│   └── Logging.py<br>
-└── raw/<br>
-    └── drilling_machine*.json<br>
+    ├── Functions_DM.py<br>
+    └── Logging.py<br>
+
