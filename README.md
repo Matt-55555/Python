@@ -10,9 +10,8 @@ Le projet est structuré en trois fichiers :
 •	Logging.py — système de logging configurable et horodaté.
 Ce projet a été conçu pour démontrer une architecture Python professionnelle : pipeline modulaire, exceptions métiers, atomicité d’écriture, logging avancé, typage fort, et séparation claire des responsabilités.
 ________________________________________
-A) Architecture générale
-
-1. Pipeline de transformation
+A) Architecture générale<br>
+1. Pipeline de transformation<br>
 Le cœur du projet est un pipeline séquentiel : une liste de fonctions, chacune recevant un dictionnaire Python et renvoyant un dictionnaire transformé.
 Pipeline utilisé :
 pipeline = [
@@ -27,7 +26,7 @@ Atouts :
 •	Étapes indépendantes et facilement réorganisables
 •	Validation typée (chaque étape doit renvoyer un dict)
 ________________________________________
-2. Exceptions métiers ("Domain Exceptions")
+2. Exceptions métiers ("Domain Exceptions")<br>
 Le fichier principal définit deux exceptions personnalisées :
 •	FileProcessingError → erreurs liées aux fichiers (lecture, écriture, JSON invalide).
 •	PipelineStepError → erreurs levées lorsqu’une étape du pipeline échoue.
@@ -36,14 +35,14 @@ Ce système permet :
 •	une remontée d’erreurs propre et lisible,
 •	une séparation claire entre erreurs techniques et erreurs métier.
 ________________________________________
-3. Gestion robuste des fichiers
+3. Gestion robuste des fichiers<br>
 La sortie est écrite de manière atomique :
 •	Écriture dans un fichier temporaire
 •	fsync() pour garantir que l’écriture est réellement persistée
 •	os.replace() pour un remplacement atomique du fichier cible
 Objectif : éviter les fichiers corrompus en cas d’interruption brutale (crash, coupure, etc.)
 ________________________________________
-4. Logging structuré
+4. Logging structuré<br>
 Le fichier Logging.py :
 •	crée un dossier de logs dédié (~/desktop/PYTHON-LOGS),
 •	génère un fichier unique par exécution (timestamp),
@@ -54,7 +53,7 @@ Ce logging est utilisé dans tout le pipeline pour :
 •	tracer les erreurs,
 •	mesurer les étapes critiques.
 ________________________________________
-5. Protection if __name__ == "__main__"
+5. Protection if __name__ == "__main__"<br>
 Le script principal utilise la garde classique :
 if __name__ == "__main__":
 Ce choix permet :
@@ -62,7 +61,7 @@ Ce choix permet :
 •	mais aussi de l’importer pour écrire des tests unitaires ou d’autres pipelines,
 •	sans déclencher automatiquement le traitement.
 ________________________________________
-6. Métriques internes
+6. Métriques internes<br>
 Le code maintient un compteur :
 metrics = Counter({...})
 Il suit :
@@ -72,7 +71,8 @@ Il suit :
 •	erreurs par étape.
 Ce compteur est facilement exploitable pour un futur monitoring (ex : Prometheus, Grafana).
 ________________________________________
-B) Fonctionnalités majeures de transformation (Functions_DM.py)
+B) Fonctionnalités majeures de transformation (Functions_DM.py)<br>
+<br>
 •	normalisation_casse_clefs
 → passe toutes les clés en minuscules (y compris en profondeur).
 •	remove_irrelevant_data_points
@@ -88,7 +88,8 @@ Ces fonctions :
 •	renvoient toujours une nouvelle structure,
 •	sont loggées pour faciliter le debugging.
 ________________________________________
-C) Objectif du projet
+C) Objectif du projet<br>
+<br>
 Ce projet a été conçu pour montrer à un recruteur :
 •	Ma capacité à structurer un projet Python “production-like”
 •	Ma maîtrise du logging, des exceptions et de la sécurité d'écriture
