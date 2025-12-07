@@ -96,7 +96,7 @@ Ce projet a été conçu pour montrer à un recruteur :
 •	Une approche professionnelle : typage, docstrings, architecture modulaire
 •	Mon expérience combinée Python / VBA pour automatiser des workflows réels
 ________________________________________
-D) Arborescence du projet
+D) Arborescence du projet<br>
 project_folder/<br>
 │<br>
 ├── Main_program.py<br>
