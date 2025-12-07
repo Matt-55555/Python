@@ -97,18 +97,11 @@ Ce projet a été conçu pour montrer à un recruteur :
 •	Mon expérience combinée Python / VBA pour automatiser des workflows réels
 ________________________________________
 D) Arborescence du projet
-project/
-│
-├── Main_program.py
-├── subfolder1/
-│   ├── Functions_DM.py
-│   └── Logging.py
-└── raw/
-    └── drilling_machine*.json
-________________________________________
-E) Exécution
-Modifier les chemins dans le __main__ :
-RAW = Path(r"C:\path\to\raw")
-PROCESSED = Path(r"C:\path\to\processed")
-Puis lancer :
-python Main_program.py
+project/<br>
+│<br>
+├── Main_program.py<br>
+├── subfolder1/<br>
+│   ├── Functions_DM.py<br>
+│   └── Logging.py<br>
+└── raw/<br>
+    └── drilling_machine*.json<br>
