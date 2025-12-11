@@ -32,7 +32,7 @@ RELEVANT_KEYS: Set[str] = frozenset(
 METERS_PER_MILE: float = 1609.0
 
 
-# --- Helpers -----------------------------------------------------------------
+# --- Helpers ----------------------------------------------------------------
 def _to_float(value: Any) -> Optional[float]:
     """Safely convert value to float. Return None on failure."""
     if value is None:
