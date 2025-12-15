@@ -2,27 +2,28 @@ import logging
 from pathlib import Path
 from datetime import datetime
 
-# Set default log directory (creates if not exist)
+# Définition du répertoire contenant le log.
 LOG_DIR = Path.home() / "desktop" / "PYTHON-LOGS"
 LOG_DIR.mkdir(parents=True, exist_ok=True)
 
-# Create a new log file for each run with timestamp
+# Création d'un nouveau fichier log horodaté pour chaque lancement du programme.
 timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
 log_file = LOG_DIR / f"Dev-Benjamin_{timestamp}.log"
 
-# Define the log format
+# Définition du format du log.
 formatter = logging.Formatter("%(asctime)s %(levelname)s %(name)s %(message)s")
 
-# Use FileHandler
+# Définition du Handler.
 handler = logging.FileHandler(filename=log_file, encoding="utf-8")
 handler.setFormatter(formatter)
 
-# Get root logger and attach handler
+# Connection du Handler au root logger.
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 logger.addHandler(handler)
 
-# Optional: also log to console
+# Affichage du logging dans le Terminal.
 console_handler = logging.StreamHandler()
 console_handler.setFormatter(formatter)
 logger.addHandler(console_handler)
+
