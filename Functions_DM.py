@@ -21,7 +21,10 @@ RELEVANT_KEYS: Set[str] = frozenset(
 
 METERS_PER_MILE: float = 1609.0
 
+
+
 #--- Fonctions utilitaires ---------------------------------------------
+
 # Conversion des données int en float.
 def to_float(value: Any) -> Optional[float]:
     if value is None:
@@ -54,6 +57,7 @@ def deep_normalize_keys(obj: Any) -> Any:
     if isinstance(obj, list):
         return [_deep_normalize_keys(item) for item in obj]
     return obj
+
 
 
 # --- Fonctions du pipeline --------------------------------------------------
@@ -148,5 +152,5 @@ def missing_contact_information(x_dict_DM: Mapping[str, Any]) -> Dict[str, Any]:
             "phone": None,
             "email": None,
         }
-        logger.debug("Ajout de la clef contact_information et de ses valeurs par défaut.")
+        logger.debug("Ajout de la clef 'contact_information' et de ses valeurs par défaut.")
     return result
