@@ -27,7 +27,7 @@ class FileProcessingError(RuntimeError):
 class PipelineStepError(RuntimeError):
     """Erreur métier lors de la transformation des JSON dans le pipeline."""
 
-# indicateur de performance du process
+# indicateur de performance
 metrics = Counter({
     "files_total": 0,
     "files_processed": 0,
@@ -36,14 +36,14 @@ metrics = Counter({
 })
 
 def _step_name(step: PipelineStep) -> str:
-    """Retourne un nom lisible et stable pour chaque step du pipeline (protection contre les fonctions lambdas et fonctions partielles)"""
+    """Retourne un nom lisible et stable pour chaque step du pipeline (protection contre les fonctions lambdas et partielles)"""
     return getattr(step, "__name__", repr(step))
 
 def process_file(in_path: Path, out_dir: Path, pipeline: List[PipelineStep]) -> None:
     """Chargement des JSON depuis in_path, exécution des transformations via le pipeline, et enregistrement des nouveaux JSON dans out_dir"""
-    logger.info("Processing %s", in_path.name)
+    logger.info("Traitement du fichier %s", in_path.name)
 
-    # Lecture des JSON - interception d'erreurs spécifiques et levée d'une erreur sur mesure ("FileProcessingError").
+    # Lecture des JSON. Interception des erreurs spécifiques et levée d'une erreur métier ("FileProcessingError").
     try:
         with in_path.open("r", encoding="utf-8") as f:
             data = json.load(f)
@@ -57,7 +57,7 @@ def process_file(in_path: Path, out_dir: Path, pipeline: List[PipelineStep]) -> 
     except OSError as e:
         raise FileProcessingError(f"OS error reading {in_path}") from e
 
-    # Exécution du pipeline - interception des erreurs spécifiques et levée d'une erreur sur mesure ("PipelineStepError").
+    # Exécution du pipeline. Interception des erreurs spécifiques et levée d'une erreur métier ("PipelineStepError").
     for step in pipeline:
         try:
             data = step(data)
@@ -65,53 +65,45 @@ def process_file(in_path: Path, out_dir: Path, pipeline: List[PipelineStep]) -> 
             name = _step_name(step)
             # metrics
             metrics["pipeline_step_failures"] += 1
-            raise PipelineStepError(f"Error in step '{name}' for file '{in_path.name}'") from e
+            raise PipelineStepError(f"Erreur dans le step '{name}' pour le fichier '{in_path.name}'") from e
 
         if not isinstance(data, dict):
             name = _step_name(step)
             raise PipelineStepError(
-                f"Pipeline step '{name}' did not return a dict (file {in_path.name})"
+                f"Le step '{name}' du pipeline n'a pas retourné un dictionnaire (fichier '{in_path.name}')"
             )
 
-    # Write file atomically and durably: write to a temp file in the same directory,
-    # fsync, then atomically replace the target file.
+    # Écriture atomique des fichiers JSON.
     out_path = out_dir / in_path.name
     tmp_file = None
     try:
-        # Create a named temp file in the output directory so os.replace stays on same filesystem
-        # delete=False so we can fsync and then move it
         fd, tmp_path_str = tempfile.mkstemp(prefix=f".{in_path.name}.tmp.", dir=str(out_dir))
         tmp_file = Path(tmp_path_str)
-        # Wrap fd as a file object opened in text mode with UTF-8 encoding
         with os.fdopen(fd, "w", encoding="utf-8") as f:
-            # Dump JSON to the temp file
             json.dump(data, f, ensure_ascii=False, indent=2)
-            # Ensure Python buffers are flushed
             f.flush()
-            # Make sure OS buffers are flushed to disk
             os.fsync(f.fileno())
-
-        # Atomic replace: move temp into final location
-        # os.replace is atomic when src and dst are on same filesystem
+            
         os.replace(str(tmp_file), str(out_path))
 
+    # Suppression du fichier tmp_file s'il existe toujours.
+    # Interception des erreurs spécifiques et levée d'une erreur métier ("FileProcessingError").
     except PermissionError as e:
-        # Clean up temp file if exists
         if tmp_file and tmp_file.exists():
             try:
                 tmp_file.unlink()
             except Exception:
                 pass
-        raise FileProcessingError(f"Permission denied writing {out_path}") from e
+        raise FileProcessingError(f"Permission pour écrire '{out_path}' refusée.") from e
     except OSError as e:
         if tmp_file and tmp_file.exists():
             try:
                 tmp_file.unlink()
             except Exception:
                 pass
-        raise FileProcessingError(f"OS error writing {out_path}") from e
+        raise FileProcessingError(f"'OSError' lors de l'écriture de '{out_path}'") from e
     except Exception:
-        # Remove temp file on any unexpected error, then re-raise (so top-level can decide)
+        # Interception des erreurs inattendues : suppression du fichier tmp_file s'il existe, et levée de la même erreur.
         if tmp_file and tmp_file.exists():
             try:
                 tmp_file.unlink()
@@ -127,16 +119,16 @@ def main(
     fld_raw = fld_raw.expanduser().resolve()
     fld_processed = fld_processed.expanduser().resolve()
     if not fld_raw.is_dir():
-        logger.error("Input folder does not exist: %s", fld_raw)
-        raise NotADirectoryError(f"Input folder does not exist: {fld_raw}")
+        logger.error("Le dossier '%s' n'existe pas.", fld_raw)
+        raise NotADirectoryError(f"Le dossier '{fld_raw}' n'existe pas.")
     fld_processed.mkdir(parents=True, exist_ok=True)
 
     files = sorted(fld_raw.glob("drilling_machine*.json"))
     if not files:
-        logger.warning("No files matched in %s", fld_raw)
+        logger.warning("Aucun fichier JSON n'a été trouvé dans '%s'", fld_raw)
         return
 
-    # Policy: attempt to process all files; collect failures and continue
+    # Traitement des fichiers JSON (politique du 'best effort' : si une erreur survient lors du traitement d'un fichier, on log l'erreur et on passe au fichier suivant.)
     success = 0
     failures = 0
     metrics["files_total"] += len(files)
@@ -146,27 +138,23 @@ def main(
             process_file(file_path, fld_processed, pipeline)
             success += 1
             metrics["files_processed"] += 1
-            logger.info("Processed %s (success=%d, failures=%d)", file_path.name, success, failures)
+            logger.info("Fichier '%s' traité avec succès (success=%d, failures=%d).", file_path.name, success, failures)
+        # Journalisation des erreurs et du stack traceback (erreurs remontées du pipeline).
         except PipelineStepError as exc:
             failures += 1
             metrics["files_failed"] += 1
-            # Top-level logging only: single place logs the exception and stack trace
-            logger.exception("PipelineStepError processing %s: %s", file_path.name, exc)
-            # continue to next file (best-effort)
+            logger.exception("PipelineStepError pour le fichier '%s': %s", file_path.name, exc
         except FileProcessingError as exc:
             failures += 1
             metrics["files_failed"] += 1
             logger.exception("FileProcessingError processing %s: %s", file_path.name, exc)
-            # continue to next file
         except Exception as exc:
-            # Unexpected error: log and re-raise so the process fails loudly (indicates bug)
             logger.exception("Unexpected error processing %s: %s", file_path.name, exc)
             raise
 
-    logger.info("Processing complete: %d success, %d failures (total %d files)", success, failures, len(files))
-    # Hook: push metrics to your monitoring system here if desired
-    # Example (pseudo): push_metrics(metrics)
+    logger.info("Traitement des fichiers terminé : %s succès, %s échec(s) - (nbr total de fichiers : %s)", success, failures, len(files))
 
+# main guard.
 if __name__ == "__main__":
     RAW = Path(r"C:\users\jmcha\desktop\raw")
     PROCESSED = Path(r"C:\users\jmcha\desktop\processed")
@@ -182,6 +170,7 @@ if __name__ == "__main__":
     main(RAW, PROCESSED, pipeline)
 
     
+
 
 
 
