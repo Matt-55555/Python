@@ -1,26 +1,3 @@
-# # Nous avons 5 fichiers JSON dans le dossier "raw", qui représentent des
-# # données collectées sur 5 machines de forage différentes. Nous voulons opérer
-# # les actions suivantes sur ces fichiers :
-
-# # - normaliser la casse des clefs des dictionnaires (et dictionnaires imbriqués)
-# # des fichiers JSON,
-# # - enlever les données qui ne nous intéressent pas,
-# # - convertir les dates en format jj/mm/aaaa lorsqu'elles sont en format aaaa-mm-dd,
-# # - convertir les données exprimées en miles en données exprimées en mètres,
-# # - lorsqu'il est manquant, ajouter un champs "contact information" qui contient les
-# # informations "operator_company", "contact_person", "phone", et "email",
-# # - uniformiser le formatage de la valeur du champs "machine_id", de manière à ce que le
-# # numéro de l'ID soit toujours composé de 3 nombre (mettre des leading 0 si le numéro de
-# # l'ID ne comporte qu'un ou deux chiffres).
-
-# # Une fois ces actions effectuées, nous voulons enregistrer ces fichiers JSON
-# # traités dans un répertoire nommé "processed".
-
-# # ------------------------------------------------------------------------------------------
-# # ------------------------------------------------------------------------------------------
-
-
-
 """Process drilling_machine JSON files through a validation/transformation pipeline."""
 
 from __future__ import annotations
@@ -207,4 +184,5 @@ if __name__ == "__main__":
     main(RAW, PROCESSED, pipeline)
 
     
+
 
