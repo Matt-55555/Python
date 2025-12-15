@@ -15,9 +15,9 @@ Objectif :<br>
 Nettoyer, normaliser, et enrichir des fichiers bruts avant de les enregistrer sous une forme propre et cohérente.<br>
 <br>
 Le projet est structuré en trois fichiers :<br>
-•	Main_program.py — orchestration du pipeline, gestion des erreurs, lecture/écriture robuste.<br>
-•	Functions_DM.py — ensemble de transformations fonctionnelles appliquées aux JSON.<br>
-•	Logging.py — système de logging configurable et horodaté.<br>
+•	Main_program.py : orchestration du pipeline, gestion des erreurs, lecture/écriture robuste.<br>
+•	Functions_DM.py : ensemble de transformations fonctionnelles appliquées aux JSON.<br>
+•	Logging.py : système de logging configurable et horodaté.<br>
 <br>
 Ce projet a été conçu pour démontrer une architecture Python répondant aux standards industriels : pipeline modulaire, exceptions métiers, atomicité d’écriture, logging avancé, typage fort, et séparation claire des responsabilités.
 ________________________________________
