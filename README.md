@@ -1,109 +1,117 @@
-# Python
-
 <strong>Auteur</strong>  
 Jean-Matthieu Charre  
-Développeur VBA senior  
-CACIB Direction Financière - DFI / GTVA  
+Développeur Python  
 Année 2024  
 ________________________________________
-<strong>Notes</strong>   
-Présentation générale :
-Ce projet Python met en place un pipeline complet de validation et transformation de fichiers JSON représentant des données de machines de forage (drilling machines).
-L’objectif : nettoyer, normaliser et enrichir des fichiers bruts avant de les enregistrer sous une forme propre et cohérente.
-Le projet est structuré en trois fichiers :
-•	Main_program.py — orchestration du pipeline, gestion des erreurs, lecture/écriture robuste.
-•	Functions_DM.py — ensemble de transformations fonctionnelles appliquées aux JSON.
-•	Logging.py — système de logging configurable et horodaté.
-Ce projet a été conçu pour démontrer une architecture Python professionnelle : pipeline modulaire, exceptions métiers, atomicité d’écriture, logging avancé, typage fort, et séparation claire des responsabilités.
+<strong>Licence</strong>  
+Projet personnel<br>
+Le code présenté sur GitHub a uniquement pour objectif de mettre en valeur mes compétences techniques  
 ________________________________________
-A) Architecture générale<br>
-1. Pipeline de transformation<br>
-Le cœur du projet est un pipeline séquentiel : une liste de fonctions, chacune recevant un dictionnaire Python et renvoyant un dictionnaire transformé.
-Pipeline utilisé :
+<strong>Notes</strong>   
+Présentation générale :<br>
+Ce projet Python met en place un pipeline complet de validation et transformation de fichiers JSON représentant des données de machines de forage (drilling machines).<br>
+<br>
+Objectif :<br>
+Nettoyer, normaliser, et enrichir des fichiers bruts avant de les enregistrer sous une forme propre et cohérente.<br>
+<br>
+Le projet est structuré en trois fichiers :<br>
+•	Main_program.py — orchestration du pipeline, gestion des erreurs, lecture/écriture robuste.<br>
+•	Functions_DM.py — ensemble de transformations fonctionnelles appliquées aux JSON.<br>
+•	Logging.py — système de logging configurable et horodaté.<br>
+<br>
+Ce projet a été conçu pour démontrer une architecture Python répondant aux standards industriels : pipeline modulaire, exceptions métiers, atomicité d’écriture, logging avancé, typage fort, et séparation claire des responsabilités.
+________________________________________
+<strong>A) Architecture générale</strong><br>
+<strong>1. Pipeline de transformation<strong><br>
+<br>
+Le cœur du projet est un pipeline séquentiel : une liste de fonctions, chacune recevant un dictionnaire et renvoyant un nouveau dictionnaire transformé.<br><br>
+Pipeline utilisé :<br>
 pipeline = [
     normalisation_casse_clefs,
     remove_irrelevant_data_points,
     format_dates,
     convert_miles_to_meters,
     missing_contact_information,
-]
-Atouts :
-•	Structure fonctionnelle et testable
-•	Étapes indépendantes et facilement réorganisables
-•	Validation typée (chaque étape doit renvoyer un dict)
+]<br><br>
+Atouts :<br>
+•	Structure fonctionnelle et testable<br>
+•	Étapes indépendantes et facilement réorganisables<br>
+•	Validation typée (chaque étape doit renvoyer un dict)<br>
 ________________________________________
-2. Exceptions métiers ("Domain Exceptions")<br>
-Le fichier principal définit deux exceptions personnalisées :
-•	FileProcessingError → erreurs liées aux fichiers (lecture, écriture, JSON invalide).
-•	PipelineStepError → erreurs levées lorsqu’une étape du pipeline échoue.
-Ce système permet :
-•	un chaînage d’exceptions (raise ... from e) pour garder les stack traces,
-•	une remontée d’erreurs propre et lisible,
-•	une séparation claire entre erreurs techniques et erreurs métier.
+<strong>2. Exceptions métiers ("Domain Exceptions")</strong><br>
+<br>
+Le fichier principal définit deux exceptions personnalisées :<br>
+•	FileProcessingError → erreurs liées aux fichiers (lecture, écriture, JSON invalide).<br>
+•	PipelineStepError → erreurs levées lorsqu’une étape du pipeline échoue.<br>
+<br>
+Ce système permet :<br>
+•	un chaînage d’exceptions (raise ... from e) pour garder les stack traces.<br>
+•	une remontée d’erreurs propre et lisible.<br>
+•	une séparation claire entre erreurs techniques et erreurs métier.<br>
 ________________________________________
-3. Gestion robuste des fichiers<br>
-La sortie est écrite de manière atomique :
-•	Écriture dans un fichier temporaire
-•	fsync() pour garantir que l’écriture est réellement persistée
-•	os.replace() pour un remplacement atomique du fichier cible
-Objectif : éviter les fichiers corrompus en cas d’interruption brutale (crash, coupure, etc.)
+<strong>3. Gestion robuste des fichiers</strong><br>
+<br>
+La sortie est écrite de manière atomique :<br>
+•	Écriture dans un fichier temporaire.<br>
+•	fsync() pour garantir que l’écriture est réellement persistée.<br>
+•	os.replace() pour un remplacement atomique du fichier cible.<br>
+<br>
+Objectif : éviter les fichiers corrompus en cas d’interruption brutale (crash, coupure, etc).
 ________________________________________
-4. Logging structuré<br>
+<strong>4. Logging structuré</strong><br>
+<br>
 Le fichier Logging.py :
-•	crée un dossier de logs dédié (~/desktop/PYTHON-LOGS),
-•	génère un fichier unique par exécution (timestamp),
-•	définit un format standardisé (date, niveau, module, message),
-•	log vers fichier et vers console.
-Ce logging est utilisé dans tout le pipeline pour :
-•	suivre les transformations,
-•	tracer les erreurs,
+•	crée un dossier de logs dédié (~/desktop/PYTHON-LOGS).<br>
+•	génère un fichier unique par exécution (timestamp).<br>
+•	définit un format standardisé (date, niveau, module, message).<br>
+•	log vers fichier et vers console.<br>
+<br>
+Ce logging est utilisé dans tout le pipeline pour :<br>
+•	suivre les transformations.<br>
+•	tracer les erreurs.<br>
 •	mesurer les étapes critiques.
 ________________________________________
-5. Protection if __name__ == "__main__"<br>
-Le script principal utilise la garde classique :
-if __name__ == "__main__":
-Ce choix permet :
-•	d’exécuter le fichier comme script,
-•	mais aussi de l’importer pour écrire des tests unitaires ou d’autres pipelines,
-•	sans déclencher automatiquement le traitement.
-________________________________________
-6. Métriques internes<br>
-Le code maintient un compteur :
-metrics = Counter({...})
-Il suit :
-•	nombre total de fichiers,
-•	fichiers traités,
-•	fichiers en erreur,
-•	erreurs par étape.
-Ce compteur est facilement exploitable pour un futur monitoring (ex : Prometheus, Grafana).
-________________________________________
-B) Fonctionnalités majeures de transformation (Functions_DM.py)<br>
+<strong>5. Protection if __name__ == "__main__"</strong><br>
 <br>
-•	normalisation_casse_clefs
-→ passe toutes les clés en minuscules (y compris en profondeur).
-•	remove_irrelevant_data_points
-→ filtre les clés non pertinentes selon une liste blanche.
-•	format_dates
-→ convertit YYYY-MM-DD en format français DD/MM/YYYY.
-•	convert_miles_to_meters
-→ conversion d’unités dans les spécifications.
-•	missing_contact_information
-→ garantit la présence d’une structure minimale contact_information.
-Ces fonctions :
-•	ne modifient jamais l’objet d’entrée (pas de mutation),
-•	renvoient toujours une nouvelle structure,
+Le script principal utilise une garde 'main' :<br>
+if __name__ == "__main__":<br>
+<br>
+Cela permet :<br>
+•	d’exécuter le fichier comme script.<br>
+•	d'importer le fichier pour écrire des tests unitaires ou utiliser les fonctions sans déclencher le traitement principal.<br>
+________________________________________
+<strong>6. Métriques internes</strong><br>
+<br>
+Le code maintient un compteur :<br>
+metrics = Counter({...})<br>
+<br>
+Le compteur traque :
+•	le nombre total de fichiers.<br>
+•	le nombre de fichiers traités.<br>
+•	le nombre de fichiers en erreur.<br>
+•	et le nombre d'erreurs par étape dans le pipeline.<br>
+<br>
+Ce compteur est facilement exploitable pour un futur monitoring (Prometheus).
+________________________________________
+<strong>B) Fonctionnalités majeures de transformation (Functions_DM.py)</strong><br>
+<br>
+•	'normalisation_casse_clefs' :<br>
+→ passe toutes les clés en minuscules (y compris en profondeur).<br>
+•	'remove_irrelevant_data_points' :<br>
+→ filtre les clés non pertinentes selon une liste blanche.<br>
+•	'format_dates' :<br>
+→ convertit YYYY-MM-DD en format français DD/MM/YYYY.<br>
+•	'convert_miles_to_meters' :<br>
+→ conversion d’unités dans les spécifications.<br>
+•	'missing_contact_information' :<br>
+→ garantit la présence d’une structure minimale contact_information.<br>
+<br>
+Ces fonctions :<br>
+•	ne modifient pas l’objet d’entrée (pas de mutation).<br>
+•	renvoient une nouvelle structure.<br>
 •	sont loggées pour faciliter le debugging.
 ________________________________________
-C) Objectif du projet<br>
-<br>
-Ce projet a été conçu pour montrer à un recruteur :
-•	Ma capacité à structurer un projet Python “production-like”
-•	Ma maîtrise du logging, des exceptions et de la sécurité d'écriture
-•	Ma compréhension du pattern pipeline, très utilisé en data engineering
-•	Une approche professionnelle : typage, docstrings, architecture modulaire
-•	Mon expérience combinée Python / VBA pour automatiser des workflows réels
-________________________________________
-D) Arborescence du projet<br>
+<strong>D) Arborescence du projet</strong><br>
 <br/>
 project_folder/<br>
 ├── Main_program.py<br>
