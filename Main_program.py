@@ -139,7 +139,7 @@ def main(
             success += 1
             metrics["files_processed"] += 1
             logger.info("Fichier '%s' traité avec succès (success=%d, failures=%d).", file_path.name, success, failures)
-        # Journalisation des erreurs et du stack traceback (erreurs remontées du pipeline).
+        # Journalisation des erreurs et du stack traceback (erreurs remontées du pipeline - fonction 'process_file').
         except PipelineStepError as exc:
             failures += 1
             metrics["files_failed"] += 1
@@ -170,6 +170,7 @@ if __name__ == "__main__":
     main(RAW, PROCESSED, pipeline)
 
     
+
 
 
 
