@@ -1,4 +1,4 @@
-"""Process drilling_machine JSON files through a validation/transformation pipeline."""
+"""Traitement de fichiers JSON à travers un pipeline de validation et de transformation"""
 
 from __future__ import annotations
 from typing import Callable, Any, Dict, List
@@ -17,17 +17,17 @@ from subfolder1.Functions_DM import (
     missing_contact_information,
 )
 
-# Type alias for the pipeline
+# Type alias pour le pipeline
 PipelineStep = Callable[[Dict[str, Any]], Dict[str, Any]]
 
 # Domain exceptions
 class FileProcessingError(RuntimeError):
-    """High-level error when reading/writing JSON files."""
+    """Erreur métier lors de la lecture ou de l'écriture des fichiers JSON."""
 
 class PipelineStepError(RuntimeError):
-    """High-level error when a pipeline step fails."""
+    """Erreur métier lors de la transformation des JSON dans le pipeline."""
 
-# in-process metrics
+# indicateur de performance du process
 metrics = Counter({
     "files_total": 0,
     "files_processed": 0,
@@ -36,15 +36,14 @@ metrics = Counter({
 })
 
 def _step_name(step: PipelineStep) -> str:
-    """Return a stable readable name for a step (works for lambdas/partials)."""
+    """Retourne un nom lisible et stable pour chaque step du pipeline (protection contre les fonctions lambdas et fonctions partielles)"""
     return getattr(step, "__name__", repr(step))
 
 def process_file(in_path: Path, out_dir: Path, pipeline: List[PipelineStep]) -> None:
-    """Load JSON from in_path, run it through pipeline steps, and save result to out_dir."""
-    # keep the informational log (not an error log)
+    """Chargement des JSON depuis in_path, exécution des transformations via le pipeline, et enregistrement des nouveaux JSON dans out_dir"""
     logger.info("Processing %s", in_path.name)
 
-    # --- Read file: catch specific exceptions, raise domain error ---
+    # Lecture des JSON - interception d'erreurs spécifiques et levée d'une erreur sur mesure ("FileProcessingError").
     try:
         with in_path.open("r", encoding="utf-8") as f:
             data = json.load(f)
@@ -58,7 +57,7 @@ def process_file(in_path: Path, out_dir: Path, pipeline: List[PipelineStep]) -> 
     except OSError as e:
         raise FileProcessingError(f"OS error reading {in_path}") from e
 
-    # --- Pipeline steps: wrap any step failure in PipelineStepError ---
+    # Exécution du pipeline - interception des erreurs spécifiques et levée d'une erreur sur mesure ("PipelineStepError").
     for step in pipeline:
         try:
             data = step(data)
@@ -66,7 +65,6 @@ def process_file(in_path: Path, out_dir: Path, pipeline: List[PipelineStep]) -> 
             name = _step_name(step)
             # metrics
             metrics["pipeline_step_failures"] += 1
-            # raise wrapped error; top-level will log
             raise PipelineStepError(f"Error in step '{name}' for file '{in_path.name}'") from e
 
         if not isinstance(data, dict):
@@ -184,5 +182,6 @@ if __name__ == "__main__":
     main(RAW, PROCESSED, pipeline)
 
     
+
 
 
