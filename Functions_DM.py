@@ -1,21 +1,11 @@
-"""
-Utility transformations for drilling_machine JSON objects.
-
-Design goals:
-- Robust to malformed input
-- No prints; use logging
-- Return a new transformed dict (do not mutate the original)
-- Clear typing and docstrings for easier review & unit testing
-"""
-
 from __future__ import annotations
-from typing import Any, Dict, Iterable, Mapping, MutableMapping, Optional, Set
+from typing import Any, Dict, Iterable, Optional, Set, Mapping
 import logging
 from datetime import datetime
 
 logger = logging.getLogger(__name__)
 
-# Allowed top-level keys (kept as a frozenset for fast membership checks)
+# Liste des clés obligatoires dans les fichiers JSON.
 RELEVANT_KEYS: Set[str] = frozenset(
     {
         "machine_id",
@@ -31,10 +21,9 @@ RELEVANT_KEYS: Set[str] = frozenset(
 
 METERS_PER_MILE: float = 1609.0
 
-
-# --- Helpers ----------------------------------------------------------------
-def _to_float(value: Any) -> Optional[float]:
-    """Safely convert value to float. Return None on failure."""
+#--- Fonctions utilitaires ---------------------------------------------
+# Conversion des données int en float.
+def to_float(value: Any) -> Optional[float]:
     if value is None:
         return None
     if isinstance(value, (float, int)):
@@ -44,27 +33,18 @@ def _to_float(value: Any) -> Optional[float]:
     except (ValueError, TypeError):
         return None
 
-
-def _format_iso_date_to_ddmmyyyy(value: str) -> Optional[str]:
-    """
-    Convert ISO-like date 'YYYY-MM-DD' to 'DD/MM/YYYY'.
-    If parsing fails, return None.
-    """
+# Conversion des dates 'AAAA-MM-JJ' en 'JJ-MM-AAAA'.
+def format_iso_date_to_ddmmyyyy(value: str) -> Optional[str]:
     if not isinstance(value, str) or "-" not in value:
         return None
     try:
         dt = datetime.strptime(value, "%Y-%m-%d")
         return dt.strftime("%d/%m/%Y")
     except ValueError:
-        # Not strictly ISO, ignore conversion
         return None
 
-
-def _deep_normalize_keys(obj: Any) -> Any:
-    """
-    Recursively lower-case dict keys. For lists, apply to each element.
-    Returns a new object (does not mutate input).
-    """
+# Normalisation de la casse des clefs des dictionaires.
+def deep_normalize_keys(obj: Any) -> Any:
     if isinstance(obj, Mapping):
         result: Dict[str, Any] = {}
         for k, v in obj.items():
@@ -76,26 +56,19 @@ def _deep_normalize_keys(obj: Any) -> Any:
     return obj
 
 
-# --- Public pipeline steps --------------------------------------------------
+# --- Fonctions du pipeline --------------------------------------------------
+
+# Normalisation des clefs des dictionnaires.
 def normalisation_casse_clefs(x_dict_DM: Mapping[str, Any]) -> Dict[str, Any]:
-    """
-    Return a deep-copied dict where all string keys are lower-cased.
-    This function will not mutate the input.
-    """
     if not isinstance(x_dict_DM, Mapping):
-        logger.debug("normalisation_casse_clefs: input is not a mapping; returning empty dict")
+        logger.debug("normalisation_casse_clefs: l'objet passé en argument de la fonction n'est pas de type 'Mapping'.")
         return {}
     return dict(_deep_normalize_keys(x_dict_DM))
 
-
+# Suppression des clefs qui ne sont pas pertinentes pour le traitement.
 def remove_irrelevant_data_points(x_dict_DM: Mapping[str, Any]) -> Dict[str, Any]:
-    """
-    Remove top-level keys that are not in RELEVANT_KEYS.
-    Keeps nested structures inside relevant keys untouched.
-    Returns a new dict.
-    """
     if not isinstance(x_dict_DM, Mapping):
-        logger.debug("remove_irrelevant_data_points: input is not a mapping; returning empty dict")
+        logger.debug("remove_irrelevant_data_points: l'objet passé en argument de la fonction n'est pas de type 'Mapping'.")
         return {}
 
     result: Dict[str, Any] = {}
@@ -103,16 +76,12 @@ def remove_irrelevant_data_points(x_dict_DM: Mapping[str, Any]) -> Dict[str, Any
         if key in RELEVANT_KEYS:
             result[key] = value
         else:
-            logger.debug("Dropping irrelevant top-level key: %s", key)
+            logger.debug("Suppression de la clef : '%s'", key)
     return result
 
-
+# Conversion des dates pour les clefs 'last_maintenance_date' and 'next_maintenance_due'.
+# Si la conversion échoue, on garde le format de la date d'origine (politique best effort).
 def format_dates(x_dict_DM: Mapping[str, Any]) -> Dict[str, Any]:
-    """
-    Convert ISO 'YYYY-MM-DD' date strings in 'last_maintenance_date' and
-    'next_maintenance_due' to 'DD/MM/YYYY'. If conversion fails, keep original value.
-    Returns a new dict (shallow copy with potential modified date strings).
-    """
     if not isinstance(x_dict_DM, Mapping):
         return {}
 
@@ -120,23 +89,17 @@ def format_dates(x_dict_DM: Mapping[str, Any]) -> Dict[str, Any]:
     for date_key in ("last_maintenance_date", "next_maintenance_due"):
         val = result.get(date_key)
         if isinstance(val, str):
-            converted = _format_iso_date_to_ddmmyyyy(val)
+            converted = format_iso_date_to_ddmmyyyy(val)
             if converted:
                 logger.debug("Converted %s: %s -> %s", date_key, val, converted)
                 result[date_key] = converted
             else:
-                logger.debug("No conversion for %s (value=%r)", date_key, val)
+                logger.debug("Pas de conversion de date effectuée pour : %s (value=%r)", date_key, val)
     return result
 
-
+# Conversion des valeurs des clefs 'depth_capacity_miles' (-> 'depth_capacity_meters') et 'drilling_speed_miles_per_day'
+# (-> 'drilling_speed_meters_per_day') en kms. Si la conversion échoue, on garde la valeur d'origine (politique best effort).
 def convert_miles_to_meters(x_dict_DM: Mapping[str, Any]) -> Dict[str, Any]:
-    """
-    Convert known mileage fields under 'specifications' to meters.
-    - 'depth_capacity_miles' -> 'depth_capacity_meters'
-    - 'drilling_speed_miles_per_day' -> 'drilling_speed_meters_per_day'
-    Conversion is best-effort; if value cannot be parsed, the original field is left untouched.
-    Returns a new dict (shallow copy); 'specifications' is copied if present.
-    """
     if not isinstance(x_dict_DM, Mapping):
         return {}
 
@@ -150,7 +113,7 @@ def convert_miles_to_meters(x_dict_DM: Mapping[str, Any]) -> Dict[str, Any]:
     if depth_val is not None:
         specs.pop("depth_capacity_miles", None)
         specs["depth_capacity_meters"] = depth_val * METERS_PER_MILE
-        logger.debug("Converted depth_capacity: %r miles -> %r meters", depth_val, specs["depth_capacity_meters"])
+        logger.debug("Conversion de 'depth_capacity' : %r miles -> %r meters", depth_val, specs["depth_capacity_meters"])
         changed = True
 
     # drilling_speed
@@ -159,24 +122,20 @@ def convert_miles_to_meters(x_dict_DM: Mapping[str, Any]) -> Dict[str, Any]:
     if speed_val is not None:
         specs.pop("drilling_speed_miles_per_day", None)
         specs["drilling_speed_meters_per_day"] = speed_val * METERS_PER_MILE
-        logger.debug("Converted drilling_speed: %r miles/day -> %r meters/day", speed_val, specs["drilling_speed_meters_per_day"])
+        logger.debug("Conversion de 'drilling_speed' : %r miles/day -> %r meters/day", speed_val, specs["drilling_speed_meters_per_day"])
         changed = True
 
     if changed:
         result["specifications"] = specs
     else:
-        # If nothing changed but original specs was present, keep original mapping type
+        # S'il n'y a pas eu de conversion et que la valeur d'origine était présente, on garde le type "Mapping" d'origine.
         if "specifications" in result:
             result["specifications"] = specs
 
     return result
 
-
+# Création de la clef 'contact_information' avec ses champs par défaut, si elle est manquante.
 def missing_contact_information(x_dict_DM: Mapping[str, Any]) -> Dict[str, Any]:
-    """
-    Ensure 'contact_information' exists with a known shape.
-    Returns a new dict (shallow copy).
-    """
     if not isinstance(x_dict_DM, Mapping):
         return {}
 
@@ -189,5 +148,5 @@ def missing_contact_information(x_dict_DM: Mapping[str, Any]) -> Dict[str, Any]:
             "phone": None,
             "email": None,
         }
-        logger.debug("Added missing contact_information template")
+        logger.debug("Ajout de la clef contact_information et de ses valeurs par défaut.")
     return result
