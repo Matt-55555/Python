@@ -1,0 +1,26 @@
+{
+  "machine_id": "DM-3",
+  "name": "Land Rover 2000",
+  "location": {
+    "latitude": 38.7749,
+    "longitude": -104.909,
+    "region": "San Diego Basin",
+    "country": "USA"
+  },
+  "status": "Active",
+  "specifications": {
+    "type": "Onshore",
+    "depth_capacity_miles": 6,
+    "drilling_speed_miles_per_day": 0.2,
+    "crew_size": 22,
+    "power_source": "Electric"
+  },
+  "last_maintenance_date": "2024-06-22",
+  "next_maintenance_due": "2025-01-03",
+  "contact_information": {
+    "operator_company": "Pacific Drilling Inc.",
+    "contact_person": "Smith John",
+    "phone": "+1-555-123-4567",
+    "email": "john.smith@oceanicdrilling.com"
+  }
+}

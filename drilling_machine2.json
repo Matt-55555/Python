@@ -1,0 +1,20 @@
+{
+  "machine_id": "DM-2",
+  "name": "Land Rover 200",
+  "location": {
+    "latitude": 37.7749,
+    "longitude": -107.909,
+    "region": "San Juan Basin",
+    "country": "USA"
+  },
+  "status": "Under Maintenance",
+  "specifications": {
+    "type": "Onshore",
+    "depth_capacity_miles": 7,
+    "drilling_speed_miles_per_day": 0.3,
+    "crew_size": 25,
+    "power_source": "Electric"
+  },
+  "last_maintenance_date": "2024-07-15",
+  "next_maintenance_due": "2025-01-15"
+}

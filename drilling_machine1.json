@@ -1,0 +1,26 @@
+{
+  "machine_id": "DM-001",
+  "name": "Deep Driller 3000",
+  "location": {
+    "latitude": 29.7355,
+    "longitude": -95.3635,
+    "region": "Gulf of Mexico",
+    "country": "USA"
+  },
+  "status": "Operational",
+  "specifications": {
+    "type": "Offshore",
+    "depth_capacity_meters": 10000,
+    "drilling_speed_meters_per_day": 300,
+    "crew_size": 40,
+    "power_source": ["Diesel, Electric"]
+  },
+  "last_maintenance_date": "2024-07-10",
+  "next_maintenance_due": "2024-12-10",
+  "contact_information": {
+    "operator_company": "Oceanic Drilling Inc.",
+    "contact_person": "John Smith",
+    "phone": "+1-555-123-4567",
+    "email": "john.smith@oceanicdrilling.com"
+  }
+}
