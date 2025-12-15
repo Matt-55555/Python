@@ -22,7 +22,8 @@ Le projet est structuré en trois fichiers :<br>
 Ce projet a été conçu pour démontrer une architecture Python répondant aux standards industriels : pipeline modulaire, exceptions métiers, atomicité d’écriture, logging avancé, typage fort, et séparation claire des responsabilités.
 ________________________________________
 <strong>A) Architecture générale</strong><br>
-<strong>1. Pipeline de transformation<strong><br>
+<br>
+<strong>1. Pipeline de transformation</strong><br>
 <br>
 Le cœur du projet est un pipeline séquentiel : une liste de fonctions, chacune recevant un dictionnaire et renvoyant un nouveau dictionnaire transformé.<br><br>
 Pipeline utilisé :<br>
