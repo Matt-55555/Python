@@ -193,8 +193,8 @@ def main(
     # Example (pseudo): push_metrics(metrics)
 
 if __name__ == "__main__":
-    RAW = Path(r"C:\users\jmcha\desktop\data - benjamin dubreu\raw")
-    PROCESSED = Path(r"C:\users\jmcha\desktop\data - benjamin dubreu\processed")
+    RAW = Path(r"C:\users\jmcha\desktop\raw")
+    PROCESSED = Path(r"C:\users\jmcha\desktop\processed")
 
     pipeline: List[PipelineStep] = [
         normalisation_casse_clefs,
@@ -207,3 +207,4 @@ if __name__ == "__main__":
     main(RAW, PROCESSED, pipeline)
 
     
+
