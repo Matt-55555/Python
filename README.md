@@ -1,6 +1,12 @@
 # Python
-Développements en Python
 
+<strong>Auteur</strong>  
+Jean-Matthieu Charre  
+Développeur VBA senior  
+CACIB Direction Financière - DFI / GTVA  
+Année 2024  
+________________________________________
+<strong>Notes</strong>   
 Présentation générale :
 Ce projet Python met en place un pipeline complet de validation et transformation de fichiers JSON représentant des données de machines de forage (drilling machines).
 L’objectif : nettoyer, normaliser et enrichir des fichiers bruts avant de les enregistrer sous une forme propre et cohérente.
