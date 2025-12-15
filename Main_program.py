@@ -27,7 +27,7 @@ class FileProcessingError(RuntimeError):
 class PipelineStepError(RuntimeError):
     """Erreur métier lors de la transformation des JSON dans le pipeline."""
 
-# indicateur de performance
+# indicateurs de performance du traitement
 metrics = Counter({
     "files_total": 0,
     "files_processed": 0,
@@ -170,6 +170,7 @@ if __name__ == "__main__":
     main(RAW, PROCESSED, pipeline)
 
     
+
 
 
 
