@@ -13,7 +13,7 @@ Ce projet Python met en place un pipeline complet de validation et transformatio
 ________________________________________
 <br>
 <h1>Développement Python<br>
-Transformation et enrichissement de données JSON avec une architecture modulaire</h1>
+Transformation et enrichissement de données JSON</h1>
 <br>
 <strong>A) Objectif</strong><br>
 <br>
