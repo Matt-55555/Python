@@ -75,7 +75,7 @@ ________________________________________
 <strong>5. Protection if __name__ == "__main__"</strong><br>
 <br>
 Le script principal utilise une garde 'main' :<br>
-if \_\_name\_\_ == "__main__":<br>
+if \_\_name\_\_ == "\_\_main\_\_":<br>
 <br>
 Cela permet :<br>
 •	d’exécuter le fichier comme script.<br>
