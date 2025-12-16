@@ -80,7 +80,7 @@ Ce logging est utilisé dans tout le pipeline pour :<br>
 <br>
 Le script principal utilise une garde 'main'. Cela permet :<br>
 •	d’exécuter le fichier comme script,<br>
-•	d'importer le fichier pour écrire des tests unitaires ou utiliser les fonctions sans déclencher le traitement principal.<br>
+•	d'importer le fichier pour écrire des tests unitaires ou utiliser des fonctions sans exécuter le traitement principal.<br>
 <br>
 &nbsp;&nbsp;&nbsp;<strong>6. Métriques internes</strong><br>
 <br>
