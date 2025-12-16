@@ -35,9 +35,9 @@ pipeline = [<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;missing_contact_information<br>
 ]<br><br>
 Atouts :<br>
-•	Structure fonctionnelle et testable<br>
-•	Étapes indépendantes et facilement réorganisables<br>
-•	Validation typée (chaque étape doit renvoyer un dict)<br>
+•	Structure fonctionnelle et testable.<br>
+•	Étapes indépendantes et facilement réorganisables.<br>
+•	Validation typée (chaque étape doit renvoyer un dictionaire).<br>
 ________________________________________
 <strong>2. Exceptions métiers ("Domain Exceptions")</strong><br>
 <br>
