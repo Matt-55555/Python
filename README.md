@@ -70,12 +70,12 @@ Le fichier Logging.py :<br>
 Ce logging est utilisé dans tout le pipeline pour :<br>
 •	suivre les transformations.<br>
 •	tracer les erreurs.<br>
-•	mesurer les étapes critiques.
+•	mesurer les étapes critiques (variable counter 'metrics').
 ________________________________________
 <strong>5. Protection if __name__ == "__main__"</strong><br>
 <br>
 Le script principal utilise une garde 'main' :<br>
-if __name__ == "__main__":<br>
+if \_\_name\_\_ == "__main__":<br>
 <br>
 Cela permet :<br>
 •	d’exécuter le fichier comme script.<br>
