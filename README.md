@@ -61,7 +61,7 @@ Objectif : éviter les fichiers corrompus en cas d’interruption brutale (crash
 ________________________________________
 <strong>4. Logging structuré</strong><br>
 <br>
-Le fichier Logging.py :
+Le fichier Logging.py :<br>
 •	crée un dossier de logs dédié (~/desktop/PYTHON-LOGS).<br>
 •	génère un fichier unique par exécution (timestamp).<br>
 •	définit un format standardisé (date, niveau, module, message).<br>
