@@ -32,7 +32,7 @@ pipeline = [
     remove_irrelevant_data_points,
     format_dates,
     convert_miles_to_meters,
-    missing_contact_information,
+    missing_contact_information
 ]<br><br>
 Atouts :<br>
 •	Structure fonctionnelle et testable<br>
