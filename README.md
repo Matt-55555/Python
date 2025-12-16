@@ -9,7 +9,11 @@ Le code présenté sur GitHub a pour but de donner un aperçu de mes pratiques e
 ________________________________________
 <strong>Notes</strong>   
 Présentation générale :<br>
-Ce projet Python met en place un pipeline complet de validation et transformation de fichiers JSON représentant des données de machines de forage (drilling machines).<br>
+Ce projet Python met en place un pipeline complet de validation et transformation de fichiers JSON représentant des données de machines de forage (drilling machines).
+________________________________________
+<br>
+<h1>Développement Python
+Transformation et enrichissement de données JSON avec une architecture modulaire</h1>
 <br>
 Objectif :<br>
 Nettoyer, normaliser, et enrichir des fichiers bruts avant de les enregistrer sous une forme propre et cohérente.<br>
