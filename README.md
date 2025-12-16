@@ -15,7 +15,7 @@ ________________________________________
 <h1>Développement Python
 Transformation et enrichissement de données JSON avec une architecture modulaire</h1>
 <br>
-<strong>A) Objectif :</strong>strong><br>
+<strong>A) Objectif :</strong><br>
 <br>
 Nettoyer, normaliser, et enrichir des fichiers bruts avant de les enregistrer sous une forme propre et cohérente.<br>
 <br>
@@ -28,7 +28,7 @@ Ce projet a été conçu pour démontrer une architecture Python répondant aux 
 <br>
 <strong>B) Architecture générale</strong><br>
 <br>
-&nbsp;&nbsp;&nbsp;&nbsp;<strong>1. Pipeline de transformation</strong><br>
+&nbsp;&nbsp;&nbsp;<strong>1. Pipeline de transformation</strong><br>
 <br>
 Le cœur du projet est un pipeline séquentiel : une liste de fonctions, chacune recevant un dictionnaire et renvoyant un nouveau dictionnaire transformé.<br><br>
 Pipeline utilisé :<br>
@@ -43,8 +43,8 @@ Atouts :<br>
 •	Structure fonctionnelle et testable,<br>
 •	Étapes indépendantes et facilement réorganisables,<br>
 •	Validation typée (chaque étape doit renvoyer un dictionaire).<br>
-________________________________________
-&nbsp;&nbsp;&nbsp;&nbsp;strong>2. Exceptions métiers ("Domain Exceptions")</strong><br>
+<br>
+&nbsp;&nbsp;&nbsp;<strong>2. Exceptions métiers ("Domain Exceptions")</strong><br>
 <br>
 Le fichier principal définit deux exceptions personnalisées :<br>
 •	FileProcessingError → erreurs liées aux fichiers (lecture, écriture, JSON invalide),<br>
@@ -54,17 +54,17 @@ Ce système permet :<br>
 •	un chaînage d’exceptions (raise ... from e) pour garder les stack traces,<br>
 •	une remontée d’erreurs propre et lisible,<br>
 •	une séparation claire entre erreurs techniques et erreurs métier.<br>
-________________________________________
-&nbsp;&nbsp;&nbsp;&nbsp;<strong>3. Gestion robuste des fichiers</strong><br>
+<br>
+&nbsp;&nbsp;&nbsp;<strong>3. Gestion robuste des fichiers</strong><br>
 <br>
 La sortie est écrite de manière atomique :<br>
 •	Écriture dans un fichier temporaire,<br>
 •	fsync() pour garantir que l’écriture est persistée (les données en mémoire RAM sont écrites sur le disque dur),<br>
 •	os.replace() pour un remplacement atomique du fichier cible.<br>
 <br>
-Objectif : éviter les fichiers corrompus en cas d’interruption brutale (crash, coupure, etc).
-________________________________________
-&nbsp;&nbsp;&nbsp;&nbsp;<strong>4. Logging structuré</strong><br>
+Objectif : éviter les fichiers corrompus en cas d’interruption brutale (crash, coupure, etc).<br>
+<br>
+&nbsp;&nbsp;&nbsp;<strong>4. Logging structuré</strong><br>
 <br>
 Le fichier Logging.py :<br>
 •	crée un dossier de logs dédié (~/desktop/PYTHON-LOGS),<br>
@@ -75,21 +75,19 @@ Le fichier Logging.py :<br>
 Ce logging est utilisé dans tout le pipeline pour :<br>
 •	suivre les transformations,<br>
 •	tracer les erreurs,<br>
-•	mesurer les étapes critiques.
-________________________________________
-&nbsp;&nbsp;&nbsp;&nbsp;<strong>5. Protection if \_\_name\_\_ == "\_\_main\_\_"</strong><br>
+•	mesurer les étapes critiques.<br>
 <br>
-Le script principal utilise une garde 'main' :<br>
-if \_\_name\_\_ == "\_\_main\_\_":<br>
+&nbsp;&nbsp;&nbsp;<strong>5. Protection si : __name__ == "__main__"</strong><br>
+<br>
+Le script principal utilise une garde 'main' : if __name__ == "__main__"<br>
 <br>
 Cela permet :<br>
 •	d’exécuter le fichier comme script,<br>
 •	d'importer le fichier pour écrire des tests unitaires ou utiliser les fonctions sans déclencher le traitement principal.<br>
-________________________________________
-&nbsp;&nbsp;&nbsp;&nbsp;<strong>6. Métriques internes</strong><br>
 <br>
-Le code maintient un compteur :<br>
-metrics = Counter({...})<br>
+&nbsp;&nbsp;&nbsp;<strong>6. Métriques internes</strong><br>
+<br>
+Le code maintient un compteur : metrics = Counter({...})<br>
 <br>
 Le compteur traque :<br>
 •	le nombre total de fichiers,<br>
@@ -97,8 +95,8 @@ Le compteur traque :<br>
 •	le nombre de fichiers en erreur,<br>
 •	et le nombre d'erreurs par étape dans le pipeline.<br>
 <br>
-Ce compteur est facilement exploitable pour un futur monitoring (Prometheus).
-________________________________________
+Ce compteur est possiblement exploitable par un outil de monitoring (e.g.: Prometheus).<br>
+<br>
 <strong>C) Fonctionnalités majeures de transformation (Functions_DM.py)</strong><br>
 <br>
 •	'def normalisation_casse_clefs()' :<br>
@@ -115,8 +113,8 @@ ________________________________________
 Ces fonctions :<br>
 •	ne modifient pas l’objet en input (pas de mutation),<br>
 •	renvoient une nouvelle structure,<br>
-•	sont loggées pour faciliter le debugging.
-________________________________________
+•	sont loggées pour faciliter le debugging.<br>
+<br>
 <strong>D) Arborescence du projet</strong><br>
 <br/>
 project_folder/<br>
