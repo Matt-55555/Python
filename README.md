@@ -70,7 +70,7 @@ Le fichier Logging.py :<br>
 Ce logging est utilisé dans tout le pipeline pour :<br>
 •	suivre les transformations.<br>
 •	tracer les erreurs.<br>
-•	mesurer les étapes critiques (variable counter 'metrics' pouvant alimenter un outil de monitoring comme Prometheus).
+•	mesurer les étapes critiques.
 ________________________________________
 <strong>5. Protection if \_\_name\_\_ == "\_\_main\_\_"</strong><br>
 <br>
@@ -96,19 +96,19 @@ Ce compteur est facilement exploitable pour un futur monitoring (Prometheus).
 ________________________________________
 <strong>B) Fonctionnalités majeures de transformation (Functions_DM.py)</strong><br>
 <br>
-•	'normalisation_casse_clefs' :<br>
+•	'def normalisation_casse_clefs()' :<br>
 → passe toutes les clés en minuscules (y compris en profondeur).<br>
-•	'remove_irrelevant_data_points' :<br>
+•	'def remove_irrelevant_data_points()' :<br>
 → filtre les clés non pertinentes selon une liste blanche.<br>
-•	'format_dates' :<br>
+•	'def format_dates()' :<br>
 → convertit YYYY-MM-DD en format français DD/MM/YYYY.<br>
-•	'convert_miles_to_meters' :<br>
+•	'def convert_miles_to_meters()' :<br>
 → conversion d’unités dans les spécifications.<br>
-•	'missing_contact_information' :<br>
+•	'def missing_contact_information()' :<br>
 → garantit la présence d’une structure minimale contact_information.<br>
 <br>
 Ces fonctions :<br>
-•	ne modifient pas l’objet d’entrée (pas de mutation).<br>
+•	ne modifient pas l’objet en input (pas de mutation).<br>
 •	renvoient une nouvelle structure.<br>
 •	sont loggées pour faciliter le debugging.
 ________________________________________
