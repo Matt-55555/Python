@@ -86,7 +86,7 @@ ________________________________________
 Le code maintient un compteur :<br>
 metrics = Counter({...})<br>
 <br>
-Le compteur traque :
+Le compteur traque :<br>
 •	le nombre total de fichiers.<br>
 •	le nombre de fichiers traités.<br>
 •	le nombre de fichiers en erreur.<br>
