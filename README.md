@@ -27,12 +27,12 @@ ________________________________________
 <br>
 Le cœur du projet est un pipeline séquentiel : une liste de fonctions, chacune recevant un dictionnaire et renvoyant un nouveau dictionnaire transformé.<br><br>
 Pipeline utilisé :<br>
-pipeline = [
-    normalisation_casse_clefs,
-    remove_irrelevant_data_points,
-    format_dates,
-    convert_miles_to_meters,
-    missing_contact_information
+pipeline = [<br>
+&nbsp;&nbsp;&nbsp;normalisation_casse_clefs,<br>
+&nbsp;&nbsp;&nbsp;remove_irrelevant_data_points,<br>
+&nbsp;&nbsp;&nbsp;format_dates,<br>
+&nbsp;&nbsp;&nbsp;convert_miles_to_meters,<br>
+&nbsp;&nbsp;&nbsp;missing_contact_information<br>
 ]<br><br>
 Atouts :<br>
 •	Structure fonctionnelle et testable<br>
