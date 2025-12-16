@@ -4,8 +4,8 @@ Développeur Python
 Année 2025  
 ________________________________________
 <strong>Licence</strong>  
-Projet personnel<br>
-Le code présenté sur GitHub a uniquement pour objectif de mettre en valeur mes compétences techniques  
+Projet personnel.<br>
+Le code présenté sur GitHub a pour but de donner un aperçu de mes pratiques et compétences techniques. 
 ________________________________________
 <strong>Notes</strong>   
 Présentation générale :<br>
