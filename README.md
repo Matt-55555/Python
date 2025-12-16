@@ -15,7 +15,7 @@ ________________________________________
 <h1>Développement Python
 Transformation et enrichissement de données JSON avec une architecture modulaire</h1>
 <br>
-<strong>A) Objectif/strong><br>
+<strong>A) Objectif</strong>strong><br>
 <br>
 Nettoyer, normaliser, et enrichir des fichiers bruts avant de les enregistrer sous une forme propre et cohérente.<br>
 <br>
