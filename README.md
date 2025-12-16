@@ -72,7 +72,7 @@ Ce logging est utilisé dans tout le pipeline pour :<br>
 •	tracer les erreurs.<br>
 •	mesurer les étapes critiques (variable counter 'metrics').
 ________________________________________
-<strong>5. Protection if __name__ == "__main__"</strong><br>
+<strong>5. Protection if \_\_name\_\_ == "\_\_main\_\_"</strong><br>
 <br>
 Le script principal utilise une garde 'main' :<br>
 if \_\_name\_\_ == "\_\_main\_\_":<br>
