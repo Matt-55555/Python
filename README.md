@@ -15,7 +15,8 @@ ________________________________________
 <h1>Développement Python
 Transformation et enrichissement de données JSON avec une architecture modulaire</h1>
 <br>
-Objectif :<br>
+<strong>A) Objectif :</strong>strong><br>
+<br>
 Nettoyer, normaliser, et enrichir des fichiers bruts avant de les enregistrer sous une forme propre et cohérente.<br>
 <br>
 Le projet est structuré en trois fichiers :<br>
@@ -23,11 +24,11 @@ Le projet est structuré en trois fichiers :<br>
 •	Functions_DM.py : ensemble de transformations fonctionnelles appliquées aux JSON,<br>
 •	Logging.py : système de logging configurable et horodaté.<br>
 <br>
-Ce projet a été conçu pour démontrer une architecture Python répondant aux standards industriels : pipeline modulaire, exceptions métiers, atomicité d’écriture, logging avancé, typage fort, et séparation claire des responsabilités.
-________________________________________
-<strong>A) Architecture générale</strong><br>
+Ce projet a été conçu pour démontrer une architecture Python répondant aux standards industriels : pipeline modulaire, exceptions métiers, atomicité d’écriture, logging avancé, typage fort, et séparation claire des responsabilités.<br>
 <br>
-<strong>1. Pipeline de transformation</strong><br>
+<strong>B) Architecture générale</strong><br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<strong>1. Pipeline de transformation</strong><br>
 <br>
 Le cœur du projet est un pipeline séquentiel : une liste de fonctions, chacune recevant un dictionnaire et renvoyant un nouveau dictionnaire transformé.<br><br>
 Pipeline utilisé :<br>
@@ -43,7 +44,7 @@ Atouts :<br>
 •	Étapes indépendantes et facilement réorganisables,<br>
 •	Validation typée (chaque étape doit renvoyer un dictionaire).<br>
 ________________________________________
-<strong>2. Exceptions métiers ("Domain Exceptions")</strong><br>
+&nbsp;&nbsp;&nbsp;&nbsp;strong>2. Exceptions métiers ("Domain Exceptions")</strong><br>
 <br>
 Le fichier principal définit deux exceptions personnalisées :<br>
 •	FileProcessingError → erreurs liées aux fichiers (lecture, écriture, JSON invalide),<br>
@@ -54,7 +55,7 @@ Ce système permet :<br>
 •	une remontée d’erreurs propre et lisible,<br>
 •	une séparation claire entre erreurs techniques et erreurs métier.<br>
 ________________________________________
-<strong>3. Gestion robuste des fichiers</strong><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<strong>3. Gestion robuste des fichiers</strong><br>
 <br>
 La sortie est écrite de manière atomique :<br>
 •	Écriture dans un fichier temporaire,<br>
@@ -63,7 +64,7 @@ La sortie est écrite de manière atomique :<br>
 <br>
 Objectif : éviter les fichiers corrompus en cas d’interruption brutale (crash, coupure, etc).
 ________________________________________
-<strong>4. Logging structuré</strong><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<strong>4. Logging structuré</strong><br>
 <br>
 Le fichier Logging.py :<br>
 •	crée un dossier de logs dédié (~/desktop/PYTHON-LOGS),<br>
@@ -76,7 +77,7 @@ Ce logging est utilisé dans tout le pipeline pour :<br>
 •	tracer les erreurs,<br>
 •	mesurer les étapes critiques.
 ________________________________________
-<strong>5. Protection if \_\_name\_\_ == "\_\_main\_\_"</strong><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<strong>5. Protection if \_\_name\_\_ == "\_\_main\_\_"</strong><br>
 <br>
 Le script principal utilise une garde 'main' :<br>
 if \_\_name\_\_ == "\_\_main\_\_":<br>
@@ -85,7 +86,7 @@ Cela permet :<br>
 •	d’exécuter le fichier comme script,<br>
 •	d'importer le fichier pour écrire des tests unitaires ou utiliser les fonctions sans déclencher le traitement principal.<br>
 ________________________________________
-<strong>6. Métriques internes</strong><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<strong>6. Métriques internes</strong><br>
 <br>
 Le code maintient un compteur :<br>
 metrics = Counter({...})<br>
@@ -98,7 +99,7 @@ Le compteur traque :<br>
 <br>
 Ce compteur est facilement exploitable pour un futur monitoring (Prometheus).
 ________________________________________
-<strong>B) Fonctionnalités majeures de transformation (Functions_DM.py)</strong><br>
+<strong>C) Fonctionnalités majeures de transformation (Functions_DM.py)</strong><br>
 <br>
 •	'def normalisation_casse_clefs()' :<br>
 &nbsp;&nbsp;&nbsp;→ passe toutes les clés en minuscules (y compris en profondeur).<br>
