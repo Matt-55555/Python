@@ -65,12 +65,12 @@ Le fichier Logging.py :<br>
 •	crée un dossier de logs dédié (~/desktop/PYTHON-LOGS).<br>
 •	génère un fichier unique par exécution (timestamp).<br>
 •	définit un format standardisé (date, niveau, module, message).<br>
-•	log vers fichier et vers console.<br>
+•	log vers fichier .txt et vers console.<br>
 <br>
 Ce logging est utilisé dans tout le pipeline pour :<br>
 •	suivre les transformations.<br>
 •	tracer les erreurs.<br>
-•	mesurer les étapes critiques (variable counter 'metrics').
+•	mesurer les étapes critiques (variable counter 'metrics' pouvant alimenter un outil de monitoring comme Prometheus).
 ________________________________________
 <strong>5. Protection if \_\_name\_\_ == "\_\_main\_\_"</strong><br>
 <br>
