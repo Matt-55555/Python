@@ -12,7 +12,7 @@ Présentation générale :<br>
 Ce projet Python met en place un pipeline complet de validation et transformation de fichiers JSON représentant des données de machines de forage (drilling machines).
 ________________________________________
 <br>
-<h1>Développement Python
+<h1>Développement Python<br>
 Transformation et enrichissement de données JSON avec une architecture modulaire</h1>
 <br>
 <strong>A) Objectif</strong><br>
