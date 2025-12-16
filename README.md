@@ -7,8 +7,7 @@ ________________________________________
 Projet personnel.<br>
 Le code présenté sur GitHub a pour but de donner un aperçu de mes pratiques et compétences techniques. 
 ________________________________________
-<strong>Notes</strong>   
-Présentation générale :<br>
+<strong>Notes</strong><br>
 Ce projet Python met en place un pipeline complet de validation et transformation de fichiers JSON représentant des données de machines de forage (drilling machines).
 ________________________________________
 <br>
